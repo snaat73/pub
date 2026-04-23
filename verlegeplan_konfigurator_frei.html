@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
@@ -204,6 +204,136 @@
       color: var(--muted);
     }
 
+    .summary-main {
+      color: var(--ink);
+    }
+
+    .summary-sub {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .table-compact {
+      table-layout: fixed;
+    }
+
+    .table-compact th,
+    .table-compact td {
+      padding: 10px 10px;
+    }
+
+    .table-compact th + th,
+    .table-compact th + td,
+    .table-compact td + td,
+    .table-compact td + th {
+      border-left: 1px solid rgba(25, 22, 18, 0.08);
+    }
+
+    .table-compact thead th {
+      font-size: 0.84rem;
+      color: var(--muted);
+      background: rgba(25, 22, 18, 0.03);
+    }
+
+    .table-compact td:last-child,
+    .table-compact th:last-child {
+      text-align: left;
+    }
+
+    .table-compact .align-right {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .table-compact .material-col {
+      min-width: 0;
+      font-size: 0.84rem;
+      line-height: 1.35;
+      color: var(--muted);
+      word-break: break-word;
+    }
+
+    .workplan-table th,
+    .workplan-table td {
+      padding: 12px 12px;
+      vertical-align: top;
+    }
+
+    .workplan-table th + th,
+    .workplan-table th + td,
+    .workplan-table td + td,
+    .workplan-table td + th {
+      border-left: 1px solid rgba(25, 22, 18, 0.14);
+    }
+
+    .workplan-table thead th {
+      background: rgba(179, 110, 55, 0.08);
+      border-bottom: 1px solid rgba(25, 22, 18, 0.14);
+    }
+
+    .workplan-table .material-col {
+      font-size: 0.8rem;
+      line-height: 1.45;
+    }
+
+    .workplan-table tfoot th,
+    .workplan-table tfoot td {
+      background: rgba(25, 22, 18, 0.04);
+    }
+
+    .table-compact tfoot th,
+    .table-compact tfoot td {
+      border-top: 1px solid rgba(25, 22, 18, 0.14);
+      border-bottom: none;
+      font-weight: 600;
+      padding-top: 12px;
+    }
+
+    .icon-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-start;
+    }
+
+    .icon-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      height: 24px;
+      padding: 0 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(25, 22, 18, 0.12);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--ink);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .icon-badge.category { background: rgba(179, 110, 55, 0.14); }
+    .icon-badge.suitability { background: rgba(95, 143, 198, 0.14); }
+    .icon-badge.norm { background: rgba(122, 134, 90, 0.14); }
+
+    .icon-legend {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px 14px;
+      margin-top: 12px;
+    }
+
+    .icon-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
     .tooltip {
       position: absolute;
       right: 16px;
@@ -294,6 +424,7 @@
 
     @media (max-width: 760px) {
       .inputs { grid-template-columns: 1fr; }
+      .icon-legend { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -325,6 +456,9 @@
           <desc id="desc">Interaktiver Verlegeplan mit praxisnahen Pflastermustern, Richtungen, Steingroessen und Farben fuer Garage, Hauszugang und Trennband.</desc>
 
           <defs>
+            <clipPath id="clipRinne" clipPathUnits="userSpaceOnUse">
+              <rect x="0" y="1206" width="160" height="5450"></rect>
+            </clipPath>
             <clipPath id="clipGarage" clipPathUnits="userSpaceOnUse">
               <rect x="160" y="1206" width="2890" height="5450"></rect>
             </clipPath>
@@ -340,12 +474,6 @@
               <path d="M0 0 L0 120" stroke="rgba(140,86,52,0.55)" stroke-width="24"></path>
             </pattern>
 
-            <pattern id="patternRinne" width="160" height="480" patternUnits="userSpaceOnUse">
-              <rect width="160" height="480" fill="var(--rinne-fill)"></rect>
-              <rect width="160" height="480" fill="none" stroke="var(--rinne-stroke)" stroke-width="10"></rect>
-              <path d="M20 48 L140 48 M20 240 L140 240 M20 432 L140 432" stroke="#4b453e" stroke-width="12" opacity="0.65"></path>
-            </pattern>
-
             <pattern id="patternKies" width="120" height="120" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
               <rect width="120" height="120" fill="var(--kies)"></rect>
               <path d="M0 0 L0 120" stroke="#bfccb8" stroke-width="24" opacity="0.35"></path>
@@ -359,8 +487,6 @@
           <rect x="0" y="0" width="8400" height="7400" fill="#f7f3eb"></rect>
 
           <g id="planRoot" transform="translate(900 500)">
-            <rect x="-450" y="-220" width="6200" height="6100" fill="none" stroke="rgba(20,18,16,0.28)" stroke-width="10"></rect>
-
             <g class="zone garage" data-zone-id="garage">
               <rect id="garageShape" class="zone-base" x="160" y="1206" width="2890" height="5450" fill="#d8ccb9"></rect>
               <g id="garageRender" clip-path="url(#clipGarage)"></g>
@@ -382,9 +508,9 @@
             </g>
 
             <g class="zone rinne" data-zone-id="rinne">
-              <rect x="0" y="1206" width="160" height="5450" fill="url(#patternRinne)"></rect>
-              <path d="M80 1320 L80 6520" stroke="#f0e6d3" stroke-width="18" stroke-dasharray="50 60" marker-end="url(#arrow)"></path>
-              <text class="small-label" x="240" y="1540">Rinnenzone - 48 x 16 x 8 cm - Beige hell</text>
+              <rect class="zone-base" x="0" y="1206" width="160" height="5450" fill="#d8ccb9"></rect>
+              <g id="rinneRender" clip-path="url(#clipRinne)"></g>
+              <text class="small-label" x="240" y="1540">Rinnenzone - Bahnenverband laengs - 40 x 16 x 8 cm - Beige hell</text>
             </g>
 
             <g class="zone kies" data-zone-id="kies">
@@ -579,27 +705,67 @@
 
       <section class="card">
         <h2>Aktuelle Zonen</h2>
-        <table>
+        <table class="table-compact">
           <tbody>
             <tr><th>Garage</th><td id="summaryGarage"></td></tr>
             <tr><th>Hauszugang</th><td id="summaryHaus"></td></tr>
             <tr><th>Trennband</th><td id="summaryBand"></td></tr>
-            <tr><th>Rinne</th><td>48 x 16 x 8 cm - Beige hell</td></tr>
+            <tr><th>Rinne</th><td>Bahnenverband - laengs - 40 x 16 x 8 cm - Beige hell</td></tr>
           </tbody>
         </table>
       </section>
 
       <section class="card">
         <h3>Werkplanung</h3>
-        <table>
+        <table class="table-compact workplan-table">
+          <thead>
+            <tr>
+              <th style="width: 18%;">Zone</th>
+              <th class="align-right" style="width: 12%;">Voll</th>
+              <th class="align-right" style="width: 13%;">Zuschnitt</th>
+              <th style="width: 41%;">Materialbedarf</th>
+              <th class="align-right" style="width: 16%;">Flaeche (Netto)</th>
+            </tr>
+          </thead>
           <tbody>
-            <tr><th>Garage Vollsteine</th><td id="wpGarageFull"></td></tr>
-            <tr><th>Garage Zuschnitte</th><td id="wpGarageCut"></td></tr>
-            <tr><th>Haus Vollsteine</th><td id="wpHausFull"></td></tr>
-            <tr><th>Haus Zuschnitte</th><td id="wpHausCut"></td></tr>
-            <tr><th>Band Vollsteine</th><td id="wpBandFull"></td></tr>
-            <tr><th>Band Zuschnitte</th><td id="wpBandCut"></td></tr>
+            <tr>
+              <th>Garage</th>
+              <td class="align-right" id="wpGarageFull"></td>
+              <td class="align-right" id="wpGarageCut"></td>
+              <td class="material-col" id="wpGarageMaterial"></td>
+              <td class="align-right" id="wpGarageArea"></td>
+            </tr>
+            <tr>
+              <th>Hauszugang</th>
+              <td class="align-right" id="wpHausFull"></td>
+              <td class="align-right" id="wpHausCut"></td>
+              <td class="material-col" id="wpHausMaterial"></td>
+              <td class="align-right" id="wpHausArea"></td>
+            </tr>
+            <tr>
+              <th>Trennband</th>
+              <td class="align-right" id="wpBandFull"></td>
+              <td class="align-right" id="wpBandCut"></td>
+              <td class="material-col" id="wpBandMaterial"></td>
+              <td class="align-right" id="wpBandArea"></td>
+            </tr>
+            <tr>
+              <th>Rinne</th>
+              <td class="align-right" id="wpRinneFull"></td>
+              <td class="align-right" id="wpRinneCut"></td>
+              <td class="material-col" id="wpRinneMaterial"></td>
+              <td class="align-right" id="wpRinneArea"></td>
+            </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <th>Gesamt</th>
+              <td class="align-right" id="wpTotalFull"></td>
+              <td class="align-right" id="wpTotalCut"></td>
+              <td class="material-col" id="wpTotalMaterial"></td>
+              <td class="align-right" id="wpTotalArea"></td>
+            </tr>
+          </tfoot>
         </table>
         <p class="note">Zuschnitte werden im Plan schraffiert dargestellt. Rand- und Anschlusslinien sind als eigene Werkplanungsebene sichtbar.</p>
       </section>
@@ -608,7 +774,7 @@
         <h3>Legende</h3>
         <div class="legend">
           <div class="legend-item"><span class="swatch" id="legendGarageSwatch"></span><span id="legendGarage"></span></div>
-          <div class="legend-item"><span class="swatch" style="background:#d8ccb9;"></span><span>Rinnenzone, 48 x 16 x 8 cm, Beige hell</span></div>
+          <div class="legend-item"><span class="swatch" style="background:#d8ccb9;"></span><span>Rinnenzone, Bahnenverband laengs, 40 x 16 x 8 cm, Beige hell</span></div>
           <div class="legend-item"><span class="swatch" id="legendBandSwatch"></span><span id="legendBand"></span></div>
           <div class="legend-item"><span class="swatch" id="legendHausSwatch"></span><span id="legendHaus"></span></div>
           <div class="legend-item"><span class="swatch" style="background:#a7b4a1;"></span><span>Rueckspruenge als Kiesflaechen mit Einfassung Kleinpflaster 6 x 6 x 6 cm</span></div>
@@ -629,59 +795,39 @@
       </section>
 
       <section class="card">
-        <h3>Verlegemuster</h3>
-        <table>
+        <h3>Verbaende, Eignung und Normen</h3>
+        <table class="table-compact">
           <thead>
-            <tr><th>Kategorie</th><th>Beispiele</th></tr>
+            <tr><th>Verband</th><th>Icons</th></tr>
           </thead>
           <tbody>
-            <tr><td>Klassisch</td><td>Laeuferverband 1/4-Versatz, Diagonalverband, Bahnenverlegung</td></tr>
-            <tr><td>Verzahnt</td><td>Ellbogenverband, Fischgraetverband, Verbundpflaster / Noppenverband</td></tr>
-            <tr><td>Unregelmaessig</td><td>Wilder Verband (roemisch), 2 Formate, Mehrsteinsystem, Polygonal / Naturstein</td></tr>
+            <tr><th>Laeuferverband 1/4-Versatz</th><td><div class="icon-stack"><span class="icon-badge category">K</span><span class="icon-badge suitability">B</span><span class="icon-badge norm">DIN</span><span class="icon-badge norm">ZTV</span></div></td></tr>
+            <tr><th>Diagonalverband</th><td><div class="icon-stack"><span class="icon-badge category">K</span><span class="icon-badge suitability">G</span><span class="icon-badge norm">DIN</span><span class="icon-badge norm">ZTV</span></div></td></tr>
+            <tr><th>Bahnenverband</th><td><div class="icon-stack"><span class="icon-badge category">K</span><span class="icon-badge suitability">B</span><span class="icon-badge norm">DIN</span><span class="icon-badge norm">MFP</span></div></td></tr>
+            <tr><th>Ellbogenverband</th><td><div class="icon-stack"><span class="icon-badge category">V</span><span class="icon-badge suitability">G</span><span class="icon-badge norm">DIN</span><span class="icon-badge norm">ZTV</span></div></td></tr>
+            <tr><th>Fischgraetverband</th><td><div class="icon-stack"><span class="icon-badge category">V</span><span class="icon-badge suitability">G</span><span class="icon-badge norm">DIN</span><span class="icon-badge norm">ZTV</span></div></td></tr>
+            <tr><th>Wilder Verband (roemischer Verband)</th><td><div class="icon-stack"><span class="icon-badge category">U</span><span class="icon-badge suitability">G</span><span class="icon-badge norm">DIN</span><span class="icon-badge norm">ZTV</span></div></td></tr>
+            <tr><th>Wilder Verband 2 Formate</th><td><div class="icon-stack"><span class="icon-badge category">U</span><span class="icon-badge suitability">G</span><span class="icon-badge norm">DIN</span><span class="icon-badge norm">ZTV</span></div></td></tr>
+            <tr><th>Wilder Verband Mehrsteinsystem</th><td><div class="icon-stack"><span class="icon-badge category">U</span><span class="icon-badge suitability">GB</span><span class="icon-badge norm">DIN</span><span class="icon-badge norm">MFP</span></div></td></tr>
+            <tr><th>Polygonal / Naturstein</th><td><div class="icon-stack"><span class="icon-badge category">U</span><span class="icon-badge suitability">R</span><span class="icon-badge norm">DIN</span><span class="icon-badge norm">MFP</span></div></td></tr>
+            <tr><th>Verbundpflaster / Noppenverband</th><td><div class="icon-stack"><span class="icon-badge category">V</span><span class="icon-badge suitability">SL</span><span class="icon-badge norm">RStO</span><span class="icon-badge norm">ZTV</span></div></td></tr>
           </tbody>
         </table>
-        <p class="note">Die Muster werden als praxisnahe Schemata gezeichnet. Versatz, Mehrsteinlogik und Fugenbild unterscheiden sich sichtbar je Typ.</p>
-      </section>
-
-      <section class="card">
-        <h3>Verkehrliche Eignung</h3>
-        <table>
-          <thead>
-            <tr><th>Muster</th><th>Eignung</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Wilder Verband (roemischer Verband)</td><td>gut geeignet</td></tr>
-            <tr><td>Laeufer- / Reihenverband</td><td>bedingt geeignet</td></tr>
-            <tr><td>Bahnenverlegung</td><td>bedingt geeignet</td></tr>
-            <tr><td>Ellbogenverband</td><td>gut geeignet</td></tr>
-            <tr><td>Diagonalverband</td><td>gut geeignet</td></tr>
-            <tr><td>Fischgraetverband</td><td>gut geeignet</td></tr>
-            <tr><td>Verbundpflaster / Noppenverband</td><td>gut geeignet, besonders fuer Schwerlast</td></tr>
-          </tbody>
-        </table>
-        <p class="note">Die Einordnung folgt deinen Beispielen und ist im Konfigurator als schnelle Planungshilfe gedacht. `Kreuzfuge` wird bewusst nicht angeboten.</p>
-      </section>
-
-      <section class="card">
-        <h3>Normreferenzen</h3>
-        <table>
-          <thead>
-            <tr><th>Muster</th><th>Regelbezug</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Laeuferverband 1/4-Versatz</td><td>DIN 18318, ZTV Pflaster-StB</td></tr>
-            <tr><td>Diagonalverband</td><td>DIN 18318, ZTV Pflaster-StB</td></tr>
-            <tr><td>Bahnenverband</td><td>DIN 18318, M FP</td></tr>
-            <tr><td>Ellbogenverband</td><td>DIN 18318, ZTV Pflaster-StB</td></tr>
-            <tr><td>Fischgraetverband</td><td>DIN 18318, ZTV Pflaster-StB</td></tr>
-            <tr><td>Wilder Verband (roemischer Verband)</td><td>DIN 18318, ZTV Pflaster-StB</td></tr>
-            <tr><td>Wilder Verband 2 Formate</td><td>DIN 18318, ZTV Pflaster-StB</td></tr>
-            <tr><td>Wilder Verband Mehrsteinsystem</td><td>DIN 18318, M FP</td></tr>
-            <tr><td>Polygonal / Naturstein</td><td>DIN 18318, M FP</td></tr>
-            <tr><td>Verbundpflaster / Noppenverband</td><td>RStO 12, ZTV Pflaster-StB</td></tr>
-          </tbody>
-        </table>
-        <p class="note">Massgebliche Regelwerke im Konfigurator: DIN 18318, ZTV Pflaster-StB, RStO 12 und M FP.</p>
+        <div class="icon-legend">
+          <div class="icon-legend-item"><span class="icon-badge category">K</span><span>Klassisch</span></div>
+          <div class="icon-legend-item"><span class="icon-badge category">V</span><span>Verzahnt</span></div>
+          <div class="icon-legend-item"><span class="icon-badge category">U</span><span>Unregelmaessig</span></div>
+          <div class="icon-legend-item"><span class="icon-badge suitability">G</span><span>gut geeignet</span></div>
+          <div class="icon-legend-item"><span class="icon-badge suitability">B</span><span>bedingt geeignet</span></div>
+          <div class="icon-legend-item"><span class="icon-badge suitability">GB</span><span>gut bis bedingt geeignet</span></div>
+          <div class="icon-legend-item"><span class="icon-badge suitability">R</span><span>repraesentativ</span></div>
+          <div class="icon-legend-item"><span class="icon-badge suitability">SL</span><span>Schwerlast</span></div>
+          <div class="icon-legend-item"><span class="icon-badge norm">DIN</span><span>DIN 18318</span></div>
+          <div class="icon-legend-item"><span class="icon-badge norm">ZTV</span><span>ZTV Pflaster-StB</span></div>
+          <div class="icon-legend-item"><span class="icon-badge norm">RStO</span><span>RStO 12</span></div>
+          <div class="icon-legend-item"><span class="icon-badge norm">MFP</span><span>M FP</span></div>
+        </div>
+        <p class="note">Die Tabelle buendelt Kategorie, verkehrliche Eignung und Regelbezug. `Kreuzfuge` wird bewusst nicht angeboten.</p>
       </section>
 
       <section class="card">
@@ -715,6 +861,7 @@
       beigeDunkel: { label: "Beige dunkel", fill: "#bda285", stroke: "#8f7457" }
     };
 
+    const commonBaselineY = 6656;
     const zoneIds = ["garage", "haus", "band"];
     const focusButtons = [...document.querySelectorAll("button[data-focus]")];
     const zones = [...document.querySelectorAll(".zone")];
@@ -736,8 +883,10 @@
     fillSelect("hausColor", colors);
     fillSelect("bandColor", colors);
 
-    document.getElementById("garageSize").value = "s40x16";
+    document.getElementById("garageSize").value = "s40x12";
     document.getElementById("hausSize").value = "s40x12";
+    document.getElementById("bandPattern").value = "laeufer14";
+    document.getElementById("bandDirection").value = "horizontal";
     document.getElementById("bandSize").value = "s40x12";
     document.getElementById("garageColor").value = "beigeHell";
     document.getElementById("hausColor").value = "beigeHell";
@@ -806,6 +955,30 @@
       const idx = family.indexOf(currentKey(sizeCfg));
       const start = Math.max(0, Math.min(idx - Math.floor((count - 1) / 2), family.length - count));
       return family.slice(start, start + count);
+    }
+
+    function positiveModulo(value, divisor) {
+      return ((value % divisor) + divisor) % divisor;
+    }
+
+    function labelsForKeys(keys) {
+      return keys.map((key) => sizes[key].label);
+    }
+
+    function exactFormatsForPattern(pattern, sizeCfg) {
+      if (pattern === "wildroemisch") return labelsForKeys(surroundingKeys(sizeCfg, 3));
+      if (pattern === "wild2f") return labelsForKeys(surroundingKeys(sizeCfg, 2));
+      if (pattern === "wildmehrstein") return labelsForKeys(sizeOrderFor(sizeCfg));
+      if (pattern === "wildpolygonal") return ["freie Polygonalformate im Schema"];
+      return [sizeCfg.label];
+    }
+
+    function formatListLabel(pattern, sizeCfg) {
+      return exactFormatsForPattern(pattern, sizeCfg).join(" / ");
+    }
+
+    function formatMaterialList(pattern, sizeCfg) {
+      return exactFormatsForPattern(pattern, sizeCfg).join(", ");
     }
 
     function rotatedModule(sizeCfg, direction) {
@@ -1031,6 +1204,16 @@
     }
 
     const zoneGeometry = {
+      rinne: {
+        origin: { x: 0, y: 1206 },
+        size: { width: 160, height: 5450 },
+        polygon: [
+          { x: 0, y: 1206 },
+          { x: 160, y: 1206 },
+          { x: 160, y: 6656 },
+          { x: 0, y: 6656 }
+        ]
+      },
       garage: {
         origin: { x: 160, y: 1206 },
         size: { width: 2890, height: 5450 },
@@ -1096,6 +1279,20 @@
         min = Math.min(min, pointSegmentDistance(point, a, b));
       }
       return min;
+    }
+
+    function polygonArea(polygon) {
+      let area = 0;
+      for (let i = 0; i < polygon.length; i += 1) {
+        const a = polygon[i];
+        const b = polygon[(i + 1) % polygon.length];
+        area += (a.x * b.y) - (b.x * a.y);
+      }
+      return Math.abs(area) / 2;
+    }
+
+    function formatArea(squareMillimeters) {
+      return `${(squareMillimeters / 1000000).toFixed(2)} m2`;
     }
 
     function segmentOrientation(a, b, c) {
@@ -1179,7 +1376,7 @@
         if (fullyInside) full += 1;
         else cut += 1;
       });
-      return { full, cut };
+      return { full, cut, total: full + cut };
     }
 
     function renderPattern(groupId, zoneName, pattern, direction, sizeCfg, colorCfg) {
@@ -1197,7 +1394,10 @@
 
       const cx = module.baseWidth / 2;
       const cy = module.baseHeight / 2;
-      const transformParts = [`translate(${geo.origin.x - margin} ${geo.origin.y - margin})`];
+      const baseTranslateX = geo.origin.x - margin;
+      const baseTranslateY = geo.origin.y - margin;
+      const alignOffsetY = positiveModulo(commonBaselineY - baseTranslateY, module.h);
+      const transformParts = [`translate(${baseTranslateX} ${baseTranslateY + alignOffsetY})`];
       if (rotation !== 0) {
         transformParts.push(`translate(${cx} ${cy}) rotate(${rotation}) translate(${-cx} ${-cy})`);
       }
@@ -1255,13 +1455,25 @@
       const stats = renderPattern(renderGroupId, zone, c.pattern, c.direction, c.size, c.color);
       const zoneName = zone === "garage" ? "Garage" : zone === "haus" ? "Hauszugang" : "Trennband";
       const text = `${patternLabel(c.pattern)} - ${directionLabel(c.direction)} - ${c.size.label} - ${c.color.label}`;
+      const formatText = formatListLabel(c.pattern, c.size);
       document.getElementById(textId).textContent = text;
-      document.getElementById(summaryId).textContent = text;
+      document.getElementById(summaryId).innerHTML = `<span class="summary-main">${text}</span><span class="summary-sub">Verwendete Formate: ${formatText}</span>`;
       document.getElementById(legendId).textContent = `${zoneName}, ${text}`;
       document.getElementById(swatchId).style.background = c.color.fill;
       document.getElementById(workplanIds.full).textContent = `${stats.full} Stk.`;
       document.getElementById(workplanIds.cut).textContent = `${stats.cut} Stk.`;
-      return stats;
+      return {
+        ...stats,
+        pattern: c.pattern,
+        size: c.size,
+        material: formatMaterialList(c.pattern, c.size),
+        partArea: (stats.full * c.size.l * c.size.w) + (stats.cut * c.size.l * c.size.w * 0.5),
+        materialDemand: `${stats.total} Stk. (${stats.full} voll / ${stats.cut} geschnitten)`
+      };
+    }
+
+    function renderRinne() {
+      return renderPattern("rinneRender", "rinne", "bahnen", "vertical", sizes.s40x16, colors.beigeHell);
     }
 
     function updateDesignNote() {
@@ -1283,13 +1495,62 @@
       document.getElementById("designNote").textContent =
         `Aktuell kombiniert der Entwurf Garage in ${patternLabel(g.pattern)} ${directionLabel(g.direction)}, ` +
         `Hauszugang in ${patternLabel(h.pattern)} ${directionLabel(h.direction)} und ein Trennband in ${patternLabel(b.pattern)} ${directionLabel(b.direction)}. ` +
-        `Technisch ist die aktuelle Garagenwahl ${suitability[g.pattern]}. Die Muster orientieren sich an DIN 18318, ZTV Pflaster-StB, RStO 12 und M FP und nutzen das hier hinterlegte GDM.CASADO-Mehrsteinsystem 32/40/48/56/64 x 16 cm.`;
+        `Technisch ist die aktuelle Garagenwahl ${suitability[g.pattern]}. Die Muster orientieren sich an DIN 18318, ZTV Pflaster-StB, RStO 12 und M FP und nutzen das hier hinterlegte GDM.CASADO-Mehrsteinsystem 32/40/48/56/64 cm in 12 cm und 16 cm Breite.`;
+    }
+
+    function updateWorkplan(statsByZone) {
+      const areaByZone = {
+        garage: polygonArea(zoneGeometry.garage.polygon),
+        haus: polygonArea(zoneGeometry.haus.polygon),
+        band: polygonArea(zoneGeometry.band.polygon),
+        rinne: polygonArea(zoneGeometry.rinne.polygon)
+      };
+
+      document.getElementById("wpGarageArea").textContent = formatArea(areaByZone.garage);
+      document.getElementById("wpHausArea").textContent = formatArea(areaByZone.haus);
+      document.getElementById("wpBandArea").textContent = formatArea(areaByZone.band);
+      document.getElementById("wpRinneArea").textContent = formatArea(areaByZone.rinne);
+
+      document.getElementById("wpGarageMaterial").textContent = `${statsByZone.garage.materialDemand} | ${statsByZone.garage.material} | Steinflaeche (Brutto) ${formatArea(statsByZone.garage.partArea)}`;
+      document.getElementById("wpHausMaterial").textContent = `${statsByZone.haus.materialDemand} | ${statsByZone.haus.material} | Steinflaeche (Brutto) ${formatArea(statsByZone.haus.partArea)}`;
+      document.getElementById("wpBandMaterial").textContent = `${statsByZone.band.materialDemand} | ${statsByZone.band.material} | Steinflaeche (Brutto) ${formatArea(statsByZone.band.partArea)}`;
+      document.getElementById("wpRinneMaterial").textContent = `${statsByZone.rinne.materialDemand} | ${statsByZone.rinne.material} | Steinflaeche (Brutto) ${formatArea(statsByZone.rinne.partArea)}`;
+
+      document.getElementById("wpRinneFull").textContent = `${statsByZone.rinne.full} Stk.`;
+      document.getElementById("wpRinneCut").textContent = `${statsByZone.rinne.cut} Stk.`;
+
+      const totalFull = statsByZone.garage.full + statsByZone.haus.full + statsByZone.band.full + statsByZone.rinne.full;
+      const totalCut = statsByZone.garage.cut + statsByZone.haus.cut + statsByZone.band.cut + statsByZone.rinne.cut;
+      const totalArea = areaByZone.garage + areaByZone.haus + areaByZone.band + areaByZone.rinne;
+      const totalPartArea = statsByZone.garage.partArea + statsByZone.haus.partArea + statsByZone.band.partArea + statsByZone.rinne.partArea;
+      const totalMaterial =
+        `${totalFull + totalCut} Stk. (${totalFull} voll / ${totalCut} geschnitten) | ` +
+        [statsByZone.garage.material, statsByZone.haus.material, statsByZone.band.material, statsByZone.rinne.material]
+          .filter((value, index, array) => array.indexOf(value) === index)
+          .join(" | ");
+
+      document.getElementById("wpTotalFull").textContent = `${totalFull} Stk.`;
+      document.getElementById("wpTotalCut").textContent = `${totalCut} Stk.`;
+      document.getElementById("wpTotalMaterial").textContent = `${totalMaterial} | Steinflaeche (Brutto) ${formatArea(totalPartArea)}`;
+      document.getElementById("wpTotalArea").textContent = formatArea(totalArea);
     }
 
     function renderAll() {
-      renderZone("garage", "garageRender", "garageText", "summaryGarage", "legendGarage", "legendGarageSwatch", { full: "wpGarageFull", cut: "wpGarageCut" });
-      renderZone("haus", "hausRender", "hausText", "summaryHaus", "legendHaus", "legendHausSwatch", { full: "wpHausFull", cut: "wpHausCut" });
-      renderZone("band", "bandRender", "bandText", "summaryBand", "legendBand", "legendBandSwatch", { full: "wpBandFull", cut: "wpBandCut" });
+      const rinneStats = renderRinne();
+      const statsByZone = {
+        rinne: {
+          ...rinneStats,
+          pattern: "bahnen",
+          size: sizes.s40x16,
+          material: sizes.s40x16.label,
+          partArea: (rinneStats.full * sizes.s40x16.l * sizes.s40x16.w) + (rinneStats.cut * sizes.s40x16.l * sizes.s40x16.w * 0.5),
+          materialDemand: `${rinneStats.total} Stk. (${rinneStats.full} voll / ${rinneStats.cut} geschnitten)`
+        },
+        garage: renderZone("garage", "garageRender", "garageText", "summaryGarage", "legendGarage", "legendGarageSwatch", { full: "wpGarageFull", cut: "wpGarageCut" }),
+        haus: renderZone("haus", "hausRender", "hausText", "summaryHaus", "legendHaus", "legendHausSwatch", { full: "wpHausFull", cut: "wpHausCut" }),
+        band: renderZone("band", "bandRender", "bandText", "summaryBand", "legendBand", "legendBandSwatch", { full: "wpBandFull", cut: "wpBandCut" })
+      };
+      updateWorkplan(statsByZone);
       updateDesignNote();
     }
 
@@ -1317,3 +1578,16 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
