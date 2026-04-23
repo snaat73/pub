@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
@@ -587,7 +587,7 @@
               <optgroup label="Unregelmaessige Verbaende">
                 <option value="wildroemisch">Wilder Verband (roemischer Verband)</option>
                 <option value="wild2f">Wilder Verband 2 Formate</option>
-                <option value="wildmehrstein">Wilder Verband Mehrsteinsystem</option>
+                <option value="wildmehrstein">Wilder Verband Mehrsteinsystem Typ AF</option>
                 <option value="wildpolygonal">Polygonal / Naturstein</option>
               </optgroup>
               <optgroup label="Funktional">
@@ -631,7 +631,7 @@
               <optgroup label="Unregelmaessige Verbaende">
                 <option value="wildroemisch">Wilder Verband (roemischer Verband)</option>
                 <option value="wild2f">Wilder Verband 2 Formate</option>
-                <option value="wildmehrstein">Wilder Verband Mehrsteinsystem</option>
+                <option value="wildmehrstein">Wilder Verband Mehrsteinsystem Typ AF</option>
                 <option value="wildpolygonal">Polygonal / Naturstein</option>
               </optgroup>
               <optgroup label="Funktional">
@@ -675,7 +675,7 @@
               <optgroup label="Unregelmaessige Verbaende">
                 <option value="wildroemisch">Wilder Verband (roemischer Verband)</option>
                 <option value="wild2f">Wilder Verband 2 Formate</option>
-                <option value="wildmehrstein">Wilder Verband Mehrsteinsystem</option>
+                <option value="wildmehrstein">Wilder Verband Mehrsteinsystem Typ AF</option>
                 <option value="wildpolygonal">Polygonal / Naturstein</option>
               </optgroup>
               <optgroup label="Funktional">
@@ -808,7 +808,7 @@
             <tr><th>Fischgraetverband</th><td><div class="icon-stack"><span class="icon-badge category">V</span><span class="icon-badge suitability">G</span><span class="icon-badge norm">DIN</span><span class="icon-badge norm">ZTV</span></div></td></tr>
             <tr><th>Wilder Verband (roemischer Verband)</th><td><div class="icon-stack"><span class="icon-badge category">U</span><span class="icon-badge suitability">G</span><span class="icon-badge norm">DIN</span><span class="icon-badge norm">ZTV</span></div></td></tr>
             <tr><th>Wilder Verband 2 Formate</th><td><div class="icon-stack"><span class="icon-badge category">U</span><span class="icon-badge suitability">G</span><span class="icon-badge norm">DIN</span><span class="icon-badge norm">ZTV</span></div></td></tr>
-            <tr><th>Wilder Verband Mehrsteinsystem</th><td><div class="icon-stack"><span class="icon-badge category">U</span><span class="icon-badge suitability">GB</span><span class="icon-badge norm">DIN</span><span class="icon-badge norm">MFP</span></div></td></tr>
+            <tr><th>Wilder Verband Mehrsteinsystem Typ AF</th><td><div class="icon-stack"><span class="icon-badge category">U</span><span class="icon-badge suitability">GB</span><span class="icon-badge norm">DIN</span><span class="icon-badge norm">MFP</span></div></td></tr>
             <tr><th>Polygonal / Naturstein</th><td><div class="icon-stack"><span class="icon-badge category">U</span><span class="icon-badge suitability">R</span><span class="icon-badge norm">DIN</span><span class="icon-badge norm">MFP</span></div></td></tr>
             <tr><th>Verbundpflaster / Noppenverband</th><td><div class="icon-stack"><span class="icon-badge category">V</span><span class="icon-badge suitability">SL</span><span class="icon-badge norm">RStO</span><span class="icon-badge norm">ZTV</span></div></td></tr>
           </tbody>
@@ -1435,7 +1435,7 @@
         fischgraet: "Fischgraetverband",
         wildroemisch: "Wilder Verband (roemischer Verband)",
         wild2f: "Wilder Verband 2 Formate",
-        wildmehrstein: "Wilder Verband Mehrsteinsystem",
+        wildmehrstein: "Wilder Verband Mehrsteinsystem Typ AF",
         wildpolygonal: "Polygonal / Naturstein",
         noppen: "Verbundpflaster / Noppenverband"
       }[value];
@@ -1495,7 +1495,7 @@
       document.getElementById("designNote").textContent =
         `Aktuell kombiniert der Entwurf Garage in ${patternLabel(g.pattern)} ${directionLabel(g.direction)}, ` +
         `Hauszugang in ${patternLabel(h.pattern)} ${directionLabel(h.direction)} und ein Trennband in ${patternLabel(b.pattern)} ${directionLabel(b.direction)}. ` +
-        `Technisch ist die aktuelle Garagenwahl ${suitability[g.pattern]}. Die Muster orientieren sich an DIN 18318, ZTV Pflaster-StB, RStO 12 und M FP und nutzen das hier hinterlegte GDM.CASADO-Mehrsteinsystem 32/40/48/56/64 cm in 12 cm und 16 cm Breite.`;
+        `Technisch ist die aktuelle Garagenwahl ${suitability[g.pattern]}. Die Muster orientieren sich an DIN 18318, ZTV Pflaster-StB, RStO 12 und M FP und nutzen das hier hinterlegte Godelmann Wilder Verband Mehrsteinsystem Typ AF 32/40/48/56/64 cm in 12 cm und 16 cm Breite.`;
     }
 
     function updateWorkplan(statsByZone) {
@@ -1578,6 +1578,7 @@
   </script>
 </body>
 </html>
+
 
 
 
