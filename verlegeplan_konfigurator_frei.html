@@ -463,7 +463,7 @@
               <rect x="160" y="1206" width="2890" height="5450"></rect>
             </clipPath>
             <clipPath id="clipBand" clipPathUnits="userSpaceOnUse">
-              <rect x="3050" y="1206" width="375" height="5450"></rect>
+              <rect x="3050" y="1500" width="375" height="5156"></rect>
             </clipPath>
             <clipPath id="clipHaus" clipPathUnits="userSpaceOnUse">
               <path d="M3425 0 L5425 0 L5425 1429 L5225 1429 L5225 6656 L3425 6656 Z"></path>
@@ -495,7 +495,7 @@
             </g>
 
             <g class="zone band" data-zone-id="band">
-              <rect id="bandShape" class="zone-base" x="3050" y="1206" width="375" height="5450" fill="#bda285"></rect>
+              <rect id="bandShape" class="zone-base" x="3050" y="1500" width="375" height="5156" fill="#bda285"></rect>
               <g id="bandRender" clip-path="url(#clipBand)"></g>
               <text id="bandText" class="small-label" x="3080" y="3470" transform="rotate(-90 3080 3470)"></text>
             </g>
@@ -514,19 +514,19 @@
             </g>
 
             <g class="zone kies" data-zone-id="kies">
-              <rect x="3050" y="0" width="375" height="1206" fill="url(#patternKies)"></rect>
+              <rect x="3050" y="0" width="375" height="1500" fill="url(#patternKies)"></rect>
               <rect x="5225" y="1429" width="200" height="5227" fill="url(#patternKies)"></rect>
             </g>
 
-            <path d="M0 1206 L3050 1206 L3050 0 L5425 0 L5425 1429 L5225 1429 L5225 6656 L0 6656 Z" fill="none" stroke="#b4472e" stroke-width="18" stroke-linejoin="round" stroke-linecap="round"></path>
+            <path d="M0 1206 L3050 1206 L3050 1500 L3425 1500 L3425 0 L5425 0 L5425 1429 L5225 1429 L5225 6656 L0 6656 Z" fill="none" stroke="#b4472e" stroke-width="18" stroke-linejoin="round" stroke-linecap="round"></path>
             <path class="boundary-line" d="M160 1206 L160 6656 L3050 6656"></path>
             <path class="boundary-line" d="M3425 0 L5425 0 L5425 1429 L5225 1429 L5225 6656"></path>
             <path class="connection-line" d="M3050 1206 L3050 6656"></path>
             <path class="connection-line" d="M3425 1206 L3425 6656"></path>
             <text class="muted-anno" x="4220" y="-80">Planungsgrenze / Rotlinie aus Bestandsplan</text>
 
-            <circle cx="3237.5" cy="1015" r="140" fill="rgba(167,180,161,0.72)" stroke="rgba(0,0,0,0.4)" stroke-width="8"></circle>
-            <text class="anno" x="3150" y="1040">SR</text>
+            <circle cx="3190" cy="1340" r="140" fill="rgba(167,180,161,0.72)" stroke="rgba(0,0,0,0.4)" stroke-width="8"></circle>
+            <text class="anno" x="3120" y="1365">SR</text>
 
             <rect x="120" y="6200" width="210" height="210" fill="rgba(255, 235, 160, 0.38)" stroke="#775d30" stroke-width="8"></rect>
             <g transform="translate(225 6305)">
@@ -855,6 +855,8 @@
       120: ["s32x12", "s40x12", "s48x12", "s56x12", "s64x12"],
       160: ["s32x16", "s40x16", "s48x16", "s56x16", "s64x16"]
     };
+    const afReferenceSize = { label: "Festformat AF", l: 640, w: 160 };
+    const afFormatLabels = ["64 x 16 x 8 cm", "48 x 16 x 8 cm", "48 x 12 x 8 cm", "36 x 12 x 8 cm", "28 x 12 x 8 cm"];
 
     const colors = {
       beigeHell: { label: "Beige hell", fill: "#d8ccb9", stroke: "#aa9b83" },
@@ -968,7 +970,7 @@
     function exactFormatsForPattern(pattern, sizeCfg) {
       if (pattern === "wildroemisch") return labelsForKeys(surroundingKeys(sizeCfg, 3));
       if (pattern === "wild2f") return labelsForKeys(surroundingKeys(sizeCfg, 2));
-      if (pattern === "wildmehrstein") return labelsForKeys(sizeOrderFor(sizeCfg));
+      if (pattern === "wildmehrstein") return afFormatLabels;
       if (pattern === "wildpolygonal") return ["freie Polygonalformate im Schema"];
       return [sizeCfg.label];
     }
@@ -979,6 +981,14 @@
 
     function formatMaterialList(pattern, sizeCfg) {
       return exactFormatsForPattern(pattern, sizeCfg).join(", ");
+    }
+
+    function effectiveSizeCfg(pattern, sizeCfg) {
+      return pattern === "wildmehrstein" ? afReferenceSize : sizeCfg;
+    }
+
+    function sizeLabelForPattern(pattern, sizeCfg) {
+      return pattern === "wildmehrstein" ? afReferenceSize.label : sizeCfg.label;
     }
 
     function rotatedModule(sizeCfg, direction) {
@@ -1116,30 +1126,33 @@
     }
 
     function drawWildMehrstein(node, module, stroke, sizeCfg) {
-      const lengths = sizeOrderFor(sizeCfg).map((key) => sizes[key].l);
+      const rowHeight16 = 160;
+      const rowHeight12 = 120;
+      const rowPatterns = [
+        { h: rowHeight16, lengths: [480, 480, 640], offset: 0 },
+        { h: rowHeight12, lengths: [360, 480, 360, 280], offset: 0 },
+        { h: rowHeight16, lengths: [640, 480, 640], offset: 0 },
+        { h: rowHeight12, lengths: [280, 480, 280, 360], offset: 0 }
+      ];
+
       let y = 0;
-      for (let row = 0; row < 5; row += 1) {
-        let x = -(lengths[row % lengths.length] / 2);
-        const seq = lengths.slice(row).concat(lengths.slice(0, row));
-        while (x < module.baseWidth) {
-          seq.forEach((length) => {
-            if (x + length > 0) appendRect(node, x, y, length, module.h, stroke);
+      let row = 0;
+      while (y < module.baseHeight) {
+        const pattern = rowPatterns[row % rowPatterns.length];
+        const cycle = pattern.lengths.reduce((sum, value) => sum + value, 0);
+        let x = -(cycle * pattern.offset);
+        while (x < module.baseWidth + cycle) {
+          for (let i = 0; i < pattern.lengths.length; i += 1) {
+            const length = pattern.lengths[i];
+            if (x + length > 0 && x < module.baseWidth) {
+              appendRect(node, x, y, length, pattern.h, stroke);
+            }
             x += length;
-          });
+            if (x >= module.baseWidth + cycle) break;
+          }
         }
-        y += module.h;
-        if (y >= module.baseHeight) break;
-      }
-      for (let row = 5; y < module.baseHeight; row += 1) {
-        let x = -(lengths[row % lengths.length] / 2);
-        const seq = lengths.slice(row % lengths.length).concat(lengths.slice(0, row % lengths.length));
-        while (x < module.baseWidth) {
-          seq.forEach((length) => {
-            if (x + length > 0) appendRect(node, x, y, length, module.h, stroke);
-            x += length;
-          });
-        }
-        y += module.h;
+        y += pattern.h;
+        row += 1;
       }
     }
 
@@ -1225,11 +1238,11 @@
         ]
       },
       band: {
-        origin: { x: 3050, y: 1206 },
-        size: { width: 375, height: 5450 },
+        origin: { x: 3050, y: 1500 },
+        size: { width: 375, height: 5156 },
         polygon: [
-          { x: 3050, y: 1206 },
-          { x: 3425, y: 1206 },
+          { x: 3050, y: 1500 },
+          { x: 3425, y: 1500 },
           { x: 3425, y: 6656 },
           { x: 3050, y: 6656 }
         ]
@@ -1344,13 +1357,33 @@
       };
     }
 
+    function stoneNominalArea(el) {
+      if (el.tagName === "rect") {
+        return parseFloat(el.getAttribute("width")) * parseFloat(el.getAttribute("height"));
+      }
+      if (el.tagName === "polygon") {
+        const points = (el.getAttribute("points") || "")
+          .trim()
+          .split(/\s+/)
+          .map((pair) => pair.split(",").map(Number))
+          .filter((pair) => pair.length === 2 && Number.isFinite(pair[0]) && Number.isFinite(pair[1]))
+          .map(([x, y]) => ({ x, y }));
+        return points.length >= 3 ? polygonArea(points) : 0;
+      }
+      const box = el.getBBox();
+      return box.width * box.height;
+    }
+
     function classifyStoneElements(group, polygon, threshold) {
       let full = 0;
       let cut = 0;
+      let fullArea = 0;
+      let cutArea = 0;
       const planRoot = document.getElementById("planRoot") || group.ownerSVGElement;
       const rootMatrix = planRoot && typeof planRoot.getCTM === "function" ? planRoot.getCTM() : null;
       [...group.querySelectorAll(".stone-unit")].forEach((el) => {
         const box = el.getBBox();
+        const area = stoneNominalArea(el);
         const matrix = el.getCTM();
         const userMatrix = (matrix && rootMatrix && typeof rootMatrix.inverse === "function")
           ? rootMatrix.inverse().multiply(matrix)
@@ -1373,10 +1406,15 @@
         const nearEdge = pointPolygonDistance(center, polygon) < threshold;
         el.classList.add(fullyInside ? "stone-full" : "stone-cut");
         if (nearEdge) el.classList.add("stone-edge");
-        if (fullyInside) full += 1;
-        else cut += 1;
+        if (fullyInside) {
+          full += 1;
+          fullArea += area;
+        } else {
+          cut += 1;
+          cutArea += area;
+        }
       });
-      return { full, cut, total: full + cut };
+      return { full, cut, total: full + cut, fullArea, cutArea, partArea: fullArea + (cutArea * 0.5) };
     }
 
     function renderPattern(groupId, zoneName, pattern, direction, sizeCfg, colorCfg) {
@@ -1384,7 +1422,8 @@
       group.innerHTML = "";
 
       const geo = zoneGeometry[zoneName];
-      const module = rotatedModule(sizeCfg, direction);
+      const renderSize = effectiveSizeCfg(pattern, sizeCfg);
+      const module = rotatedModule(renderSize, direction);
       const margin = (direction === "diag-pos" || direction === "diag-neg" || pattern === "diagonal") ? Math.max(module.w, module.h) * 2 : Math.max(module.w, module.h);
       module.baseWidth = geo.size.width + margin * 2;
       module.baseHeight = geo.size.height + margin * 2;
@@ -1396,7 +1435,7 @@
       const cy = module.baseHeight / 2;
       const baseTranslateX = geo.origin.x - margin;
       const baseTranslateY = geo.origin.y - margin;
-      const alignOffsetY = positiveModulo(commonBaselineY - baseTranslateY, module.h);
+      const alignOffsetY = positiveModulo(commonBaselineY - baseTranslateY, pattern === "wildmehrstein" ? 560 : module.h);
       const transformParts = [`translate(${baseTranslateX} ${baseTranslateY + alignOffsetY})`];
       if (rotation !== 0) {
         transformParts.push(`translate(${cx} ${cy}) rotate(${rotation}) translate(${-cx} ${-cy})`);
@@ -1414,7 +1453,7 @@
       if (pattern === "noppen") drawNoppen(fillLayer, module, colorCfg.stroke);
 
       group.appendChild(fillLayer);
-      return classifyStoneElements(fillLayer, geo.polygon, Math.max(sizeCfg.w * 0.7, 100));
+      return classifyStoneElements(fillLayer, geo.polygon, Math.max(renderSize.w * 0.7, 100));
     }
 
     function cfg(zone) {
@@ -1450,11 +1489,21 @@
       }[value];
     }
 
+    function syncPatternControls() {
+      zoneIds.forEach((zone) => {
+        const pattern = document.getElementById(`${zone}Pattern`).value;
+        const sizeSelect = document.getElementById(`${zone}Size`);
+        const isFixed = pattern === "wildmehrstein";
+        sizeSelect.disabled = isFixed;
+        sizeSelect.title = isFixed ? "Bei Mehrsteinsystem Typ AF fest vorgegeben." : "";
+      });
+    }
+
     function renderZone(zone, renderGroupId, textId, summaryId, legendId, swatchId, workplanIds) {
       const c = cfg(zone);
       const stats = renderPattern(renderGroupId, zone, c.pattern, c.direction, c.size, c.color);
       const zoneName = zone === "garage" ? "Garage" : zone === "haus" ? "Hauszugang" : "Trennband";
-      const text = `${patternLabel(c.pattern)} - ${directionLabel(c.direction)} - ${c.size.label} - ${c.color.label}`;
+      const text = `${patternLabel(c.pattern)} - ${directionLabel(c.direction)} - ${sizeLabelForPattern(c.pattern, c.size)} - ${c.color.label}`;
       const formatText = formatListLabel(c.pattern, c.size);
       document.getElementById(textId).textContent = text;
       document.getElementById(summaryId).innerHTML = `<span class="summary-main">${text}</span><span class="summary-sub">Verwendete Formate: ${formatText}</span>`;
@@ -1467,7 +1516,7 @@
         pattern: c.pattern,
         size: c.size,
         material: formatMaterialList(c.pattern, c.size),
-        partArea: (stats.full * c.size.l * c.size.w) + (stats.cut * c.size.l * c.size.w * 0.5),
+        partArea: stats.partArea,
         materialDemand: `${stats.total} Stk. (${stats.full} voll / ${stats.cut} geschnitten)`
       };
     }
@@ -1536,6 +1585,7 @@
     }
 
     function renderAll() {
+      syncPatternControls();
       const rinneStats = renderRinne();
       const statsByZone = {
         rinne: {
