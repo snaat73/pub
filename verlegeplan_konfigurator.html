@@ -346,9 +346,26 @@
       box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
     }
 
+    .tooltip.hidden {
+      display: none;
+    }
+
+    .tooltip-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.86);
+      line-height: 1;
+    }
+
     .tooltip strong {
       display: block;
       margin-bottom: 4px;
+      padding-right: 34px;
       color: var(--accent);
     }
 
@@ -619,6 +636,7 @@
         </svg>
 
         <div class="tooltip" id="tooltip">
+          <button type="button" class="tooltip-close" id="tooltipClose" aria-label="Hinweis schliessen">×</button>
           <strong>Praxisnahe Muster</strong>
           Die Muster werden im Plan als ausfuehrungsnahe Schemata gezeichnet. Je Zone aendern sich Verbandtyp, Richtung, Systemlogik und Materialangaben sofort.
         </div>
@@ -922,6 +940,8 @@
     const zoneIds = ["garage", "haus", "band"];
     const focusButtons = [...document.querySelectorAll("button[data-focus]")];
     const zones = [...document.querySelectorAll(".zone")];
+    const tooltip = document.getElementById("tooltip");
+    const tooltipClose = document.getElementById("tooltipClose");
 
     function fillSelect(selectId, entries) {
       const select = document.getElementById(selectId);
@@ -1679,6 +1699,8 @@
     focusButtons.forEach((button) => {
       button.addEventListener("click", () => setFocus(button.dataset.focus));
     });
+
+    tooltipClose.addEventListener("click", () => tooltip.classList.add("hidden"));
 
     renderAll();
     setFocus("all");
