@@ -425,6 +425,61 @@
     @media (max-width: 760px) {
       .inputs { grid-template-columns: 1fr; }
       .icon-legend { grid-template-columns: 1fr; }
+      .workplan-table,
+      .workplan-table thead,
+      .workplan-table tbody,
+      .workplan-table tfoot,
+      .workplan-table tr,
+      .workplan-table th,
+      .workplan-table td {
+        display: block;
+        width: 100% !important;
+      }
+
+      .workplan-table thead {
+        display: none;
+      }
+
+      .workplan-table tbody tr,
+      .workplan-table tfoot tr {
+        margin-bottom: 12px;
+        border: 1px solid rgba(25, 22, 18, 0.08);
+        border-radius: 16px;
+        overflow: hidden;
+        background: rgba(25, 22, 18, 0.02);
+      }
+
+      .workplan-table tbody th,
+      .workplan-table tfoot th {
+        padding: 10px 10px 6px;
+        border-bottom: none;
+        background: transparent;
+      }
+
+      .workplan-table td {
+        padding: 6px 10px;
+        border-left: none !important;
+        border-bottom: none;
+        text-align: left !important;
+      }
+
+      .workplan-table td::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 2px;
+        font-size: 0.76rem;
+        color: var(--muted);
+      }
+
+      .workplan-table .material-col {
+        font-size: 0.84rem;
+        line-height: 1.35;
+      }
+
+      .workplan-table tfoot th,
+      .workplan-table tfoot td {
+        background: rgba(25, 22, 18, 0.04);
+      }
     }
   </style>
 </head>
@@ -730,40 +785,40 @@
           <tbody>
             <tr>
               <th>Garage</th>
-              <td class="align-right" id="wpGarageArea"></td>
-              <td class="align-right" id="wpGarageFull"></td>
-              <td class="align-right" id="wpGarageCut"></td>
-              <td class="material-col" id="wpGarageMaterial"></td>
+              <td class="align-right" data-label="Flaeche (Netto)" id="wpGarageArea"></td>
+              <td class="align-right" data-label="Voll" id="wpGarageFull"></td>
+              <td class="align-right" data-label="Zuschnitt" id="wpGarageCut"></td>
+              <td class="material-col" data-label="Materialbedarf" id="wpGarageMaterial"></td>
             </tr>
             <tr>
               <th>Hauszugang</th>
-              <td class="align-right" id="wpHausArea"></td>
-              <td class="align-right" id="wpHausFull"></td>
-              <td class="align-right" id="wpHausCut"></td>
-              <td class="material-col" id="wpHausMaterial"></td>
+              <td class="align-right" data-label="Flaeche (Netto)" id="wpHausArea"></td>
+              <td class="align-right" data-label="Voll" id="wpHausFull"></td>
+              <td class="align-right" data-label="Zuschnitt" id="wpHausCut"></td>
+              <td class="material-col" data-label="Materialbedarf" id="wpHausMaterial"></td>
             </tr>
             <tr>
               <th>Trennband</th>
-              <td class="align-right" id="wpBandArea"></td>
-              <td class="align-right" id="wpBandFull"></td>
-              <td class="align-right" id="wpBandCut"></td>
-              <td class="material-col" id="wpBandMaterial"></td>
+              <td class="align-right" data-label="Flaeche (Netto)" id="wpBandArea"></td>
+              <td class="align-right" data-label="Voll" id="wpBandFull"></td>
+              <td class="align-right" data-label="Zuschnitt" id="wpBandCut"></td>
+              <td class="material-col" data-label="Materialbedarf" id="wpBandMaterial"></td>
             </tr>
             <tr>
               <th>Rinne</th>
-              <td class="align-right" id="wpRinneArea"></td>
-              <td class="align-right" id="wpRinneFull"></td>
-              <td class="align-right" id="wpRinneCut"></td>
-              <td class="material-col" id="wpRinneMaterial"></td>
+              <td class="align-right" data-label="Flaeche (Netto)" id="wpRinneArea"></td>
+              <td class="align-right" data-label="Voll" id="wpRinneFull"></td>
+              <td class="align-right" data-label="Zuschnitt" id="wpRinneCut"></td>
+              <td class="material-col" data-label="Materialbedarf" id="wpRinneMaterial"></td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
               <th>Gesamt</th>
-              <td class="align-right" id="wpTotalArea"></td>
-              <td class="align-right" id="wpTotalFull"></td>
-              <td class="align-right" id="wpTotalCut"></td>
-              <td class="material-col" id="wpTotalMaterial"></td>
+              <td class="align-right" data-label="Flaeche (Netto)" id="wpTotalArea"></td>
+              <td class="align-right" data-label="Voll" id="wpTotalFull"></td>
+              <td class="align-right" data-label="Zuschnitt" id="wpTotalCut"></td>
+              <td class="material-col" data-label="Materialbedarf" id="wpTotalMaterial"></td>
             </tr>
           </tfoot>
         </table>
