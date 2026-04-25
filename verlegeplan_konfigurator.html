@@ -515,7 +515,7 @@
 
     @page {
       size: A3 landscape;
-      margin: 10mm;
+      margin: 6mm;
     }
 
     @media print {
@@ -535,48 +535,65 @@
         --shadow: rgba(0, 0, 0, 0);
       }
 
+      html,
+      body {
+        width: 100%;
+        height: auto;
+        overflow: visible;
+      }
+
       body {
         background: #fff;
         color: #000;
         font-size: 10pt;
+        line-height: 1.18;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
       }
 
       .layout {
         grid-template-columns: 1.6fr 1fr;
-        gap: 7mm;
+        gap: 4mm;
         padding: 0;
-        min-height: auto;
+        min-height: calc(297mm - 12mm);
+        height: calc(297mm - 12mm);
+        align-items: start;
+        border: 1px solid #000;
       }
 
       .panel {
         background: #fff;
-        border: 1px solid #000;
+        border: none;
         border-radius: 0;
         box-shadow: none;
       }
 
       .main,
       .sidebar {
-        padding: 6mm;
+        padding: 3mm;
+        height: 100%;
+      }
+
+      .main {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-right: 1px solid #000;
       }
 
       .sidebar {
         position: static;
         max-height: none;
         overflow: visible;
-        gap: 4mm;
+        gap: 2mm;
+        align-content: start;
+        border-right: 1px solid #000;
       }
 
       .head {
-        display: block;
-        margin-bottom: 4mm;
+        display: none !important;
       }
 
-      .head h1 {
-        display: none;
-      }
-
-      .head p,
       .meta,
       .zone-buttons,
       .zone-config,
@@ -586,47 +603,72 @@
       }
 
       .print-sheet-title {
-        display: block;
-        margin-bottom: 3mm;
-      }
-
-      .print-sheet-title h1 {
-        font-size: 16pt;
-      }
-
-      .print-sheet-title p {
-        color: #000;
-        font-size: 9pt;
+        display: none !important;
       }
 
       .card {
-        padding: 3.5mm;
+        padding: 2mm;
         border-radius: 0;
-        border: 1px solid #000;
+        border: none;
         background: #fff;
         break-inside: avoid;
       }
 
-      h2, h3 {
+      .sidebar .card {
+        border-top: 1px solid #000;
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .sidebar .card:first-child {
+        border-top: none;
+        padding-top: 0;
+      }
+
+      .sidebar .card.print-section-start {
+        border-top: none;
+        padding-top: 0;
+      }
+
+      h2,
+      h3 {
         color: #000;
+        font-size: 12pt;
+        line-height: 1.1;
       }
 
       .plan-wrap {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border-radius: 0;
-        border: 1px solid #000;
-        background: #fff;
+        border: none;
+        background: #fff !important;
       }
 
       svg {
-        background: #fff;
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+        margin: auto 0;
+        background: #fff !important;
+      }
+
+      .plan-background,
+      svg > rect:first-child {
+        fill: #fff !important;
       }
 
       .zone-base {
-        opacity: 0.08;
+        opacity: 0 !important;
+        fill: none !important;
       }
 
       .stone-unit {
         stroke: #000 !important;
+        stroke-width: 7 !important;
       }
 
       .stone-full {
@@ -641,14 +683,18 @@
 
       .boundary-line,
       .connection-line,
-      .dim,
+      .dim {
+        fill: none !important;
+        stroke: #000 !important;
+      }
+
       .dim-text,
       .anno,
       .muted-anno,
       .zone-label,
       .small-label {
-        stroke: #000 !important;
         fill: #000 !important;
+        stroke: none !important;
       }
 
       .connection-line {
@@ -656,31 +702,40 @@
       }
 
       .legend-item {
-        grid-template-columns: 16px 1fr;
-        gap: 7px;
+        grid-template-columns: 10px 1fr;
+        gap: 5px;
+        font-size: 8pt;
+        line-height: 1.12;
+      }
+
+      .legend {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5mm 2mm;
       }
 
       .swatch {
-        width: 16px;
-        height: 16px;
+        width: 10px;
+        height: 10px;
         border-radius: 0;
         background: #fff !important;
         border: 1px solid #000;
       }
 
       table {
-        font-size: 8.7pt;
+        font-size: 10pt;
       }
 
-      th, td {
-        padding: 2.2mm 1.4mm;
+      th,
+      td {
+        padding: 1.1mm 1mm;
+        line-height: 1.12;
       }
 
       .table-compact th,
       .table-compact td,
       .workplan-table th,
       .workplan-table td {
-        padding: 2.2mm 1.6mm;
+        padding: 1.1mm 1mm;
       }
 
       .table-compact thead th,
@@ -688,12 +743,68 @@
       .workplan-table tfoot th,
       .workplan-table tfoot td {
         background: #f0f0f0 !important;
+        font-size: 8pt;
+        line-height: 1.1;
+      }
+
+      .table-compact th:first-child,
+      .workplan-table th:first-child,
+      .selected-stone-table th:first-child {
+        width: 23%;
+      }
+
+      .workplan-table {
+        table-layout: fixed;
+      }
+
+      .workplan-table th:nth-child(2),
+      .workplan-table td:nth-child(2),
+      .workplan-table th:nth-child(3),
+      .workplan-table td:nth-child(3),
+      .workplan-table th:nth-child(4),
+      .workplan-table td:nth-child(4),
+      .workplan-table th:nth-child(5),
+      .workplan-table td:nth-child(5) {
+        white-space: nowrap;
+      }
+
+      .workplan-table .material-col,
+      .selected-stone-table td,
+      .selected-stone-table th {
+        font-size: 8pt;
+        line-height: 1.1;
+      }
+
+      .summary-main {
+        font-size: 10pt;
+        line-height: 1.12;
       }
 
       .summary-sub {
-        margin-top: 1mm;
-        font-size: 7.8pt;
+        margin-top: 0.5mm;
+        font-size: 8pt;
         color: #222;
+        line-height: 1.08;
+      }
+
+      .zone-label {
+        font-size: 90px;
+      }
+
+      .small-label {
+        font-size: 46px;
+      }
+
+      .dim-text {
+        font-size: 60px;
+      }
+
+      .anno {
+        font-size: 60px;
+      }
+
+      .muted-anno {
+        font-size: 50px;
       }
 
       .note {
@@ -763,7 +874,7 @@
             </marker>
           </defs>
 
-          <rect x="0" y="0" width="8400" height="7400" fill="#f7f3eb"></rect>
+          <rect class="plan-background" x="0" y="0" width="8400" height="7400" fill="#f7f3eb"></rect>
 
           <g id="planRoot" transform="translate(900 500)">
             <g class="zone garage" data-zone-id="garage">
@@ -983,7 +1094,7 @@
         </div>
       </section>
 
-      <section class="card">
+      <section class="card print-section-start">
         <h2>Aktuelle Zonen</h2>
         <table class="table-compact">
           <tbody>
